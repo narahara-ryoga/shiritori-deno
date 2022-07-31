@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="styles.css">
+</head>
+ 
+<body>
+  <h1>しりとり</h1>
+  <p id="previousWord"></p>
+  <input id="nextWordInput" type="text" />
+  <button id="nextWordSendButton">送信</button>
+
+  <script type="module">  //ブラウザで JavaScript
+    window.onload = async (event) => {
+      await fetch("/shiritori", {   //POST で JSON を送る
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nextWord: "りんご" })
+      });
+
+      //ブラウザからしりとりの前の単語を取得
+      const response = await fetch("/shiritori");
+      const previousWord = await response.text();
+      //前の単語を表示
+      const para = document.querySelector("#previousWord");
+      para.innerText =`前の単語：${previousWord}`; 
+
+      //テキストフィールドやボタンを追加して、任意の単語をサーバーに送れるようにします。
+      document.querySelector("#nextWordSendButton").onclick = async (event) => {
+        const nextWord = document.querySelector("#nextWordInput").value;
+        const response = await fetch("/shiritori", {
+          method: "POST",
+          headers: { "Content-Type": "application/json"},   //json形式で返す
+          body: JSON.stringify({ nextWord })
+        });
+        //ブラウザでエラーをダイアログで表示する
+        if(response.status / 100 !== 2) {
+          alert(await response.text());
+          return;
+        }
+        
+        const previousWord = await response.text();
+        const para = document.querySelector("#previousWord");
+        para.innerText = `前の単語：${previousWord}`;
+      };
+    };
+  </script>
+</body>
+
+</html>
