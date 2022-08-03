@@ -1,3 +1,27 @@
 body {
+    text-align: center;
     background: skyblue;
+
+    position: relative;
+    padding: 1.5rem 2.5rem;
+    border: 4px solid rgb(68, 100, 126);
 }
+  
+body:before {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(99.3% - 8px);
+    height: calc(95% - 8px);
+    content: '';
+    border: 4px dotted rgb(68, 100, 126);
+}
+span.yellow{
+   color: rgb(232, 248, 57)
+}
+
+span.green{
+    color: forestgreen
+}
+
+
